@@ -5,7 +5,7 @@ terraform {
       version = "~> 5"
     }
     porkbun = {
-      source = "kyswtn/porkbun"
+      source  = "kyswtn/porkbun"
       version = "0.1.3"
     }
   }

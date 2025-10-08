@@ -1,5 +1,11 @@
+variable "zola_version" {
+  description = "Version of Zola, the static site generator to install"
+  type        = string
+  default     = "0.20.0"
+}
+
 resource "cloudflare_pages_project" "taimihud" {
-  account_id   = var.cloudflare_account_id
+  account_id        = var.cloudflare_account_id
   name              = "taimihud"
   production_branch = "main"
 
@@ -22,24 +28,24 @@ resource "cloudflare_pages_project" "taimihud" {
   }
   deployment_configs = {
     production = {
-      environment_variables = {
-        UNSTABLE_PRE_BUILD = "asdf plugin add zola https://github.com/salasrod/asdf-zola && asdf install zola 0.20.0 && asdf global zola 0.20.0"
-        ZOLA_VERSION       = "0.20.0"
+      env_vars = {
+        UNSTABLE_PRE_BUILD = {
+          type  = "plain_text"
+          value = "asdf plugin add zola https://github.com/salasrod/asdf-zola && asdf install zola ${var.zola_version} && asdf global zola ${var.zola_version}"
+        }
+        ZOLA_VERSION = {
+          type  = "plain_text"
+          value = var.zola_version
+        }
       }
     }
-  }
-  lifecycle {
-    ignore_changes = [
-      deployment_configs,
-      source
-    ]
   }
 }
 
 resource "cloudflare_pages_domain" "taimihud_root" {
   account_id   = var.cloudflare_account_id
   project_name = cloudflare_pages_project.taimihud.name
-  name       = var.base_domain_name
+  name         = var.base_domain_name
 }
 
 resource "cloudflare_dns_record" "taimihud_root_pages" {
@@ -47,6 +53,6 @@ resource "cloudflare_dns_record" "taimihud_root_pages" {
   proxied = false
   ttl     = 3600
   type    = "CNAME"
-  content   = cloudflare_pages_project.taimihud.subdomain #"${cloudflare_pages_project.taimihud}.pages.dev"
+  content = cloudflare_pages_project.taimihud.subdomain
   zone_id = cloudflare_zone.taimihud.id
 }
