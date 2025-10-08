@@ -7,6 +7,7 @@ variable "base_domain_name" {
 }
 
 resource "porkbun_nameservers" "taimihud" {
-  domain      = var.base_domain_name
-  nameservers = cloudflare_zone.taimihud.name_servers
+  domain = var.base_domain_name
+  # why would you make it care about order like that? what the hell man
+  nameservers = reverse(cloudflare_zone.taimihud.name_servers)
 }

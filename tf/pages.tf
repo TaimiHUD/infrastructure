@@ -40,6 +40,13 @@ resource "cloudflare_pages_project" "taimihud" {
       }
     }
   }
+
+  lifecycle {
+    ignore_changes = [
+      deployment_configs,
+      source
+    ]
+  }
 }
 
 resource "cloudflare_pages_domain" "taimihud_root" {
