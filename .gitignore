@@ -1,0 +1,4 @@
+tf/.terraform
+tf/terraform.tfvars
+tf/terraform.tfstate.backup
+.direnv/

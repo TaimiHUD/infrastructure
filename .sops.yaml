@@ -1,0 +1,10 @@
+keys:
+- &kat CD8CE78CB0B3BDD4 # https://inskip.me/pubkey.asc
+- &arc 65BD3044771CB6FB # <3 :3
+creation_rules:
+- path_regex: tf/terraform.tfvars.sops$
+  shamir_threshold: 1
+  key_groups:
+  - pgp:
+    - *kat
+    - *arc
