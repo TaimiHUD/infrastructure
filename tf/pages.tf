@@ -63,3 +63,24 @@ resource "cloudflare_dns_record" "taimihud_root_pages" {
   content = cloudflare_pages_project.taimihud.subdomain
   zone_id = cloudflare_zone.taimihud.id
 }
+
+resource "cloudflare_page_rule" "taimihud_www_redir" {
+  zone_id = cloudflare_zone.taimihud.id
+  target = "${cloudflare_dns_record.taimihud_www.name}/*"
+  priority = 1
+  status = "active"
+  actions = {
+    forwarding_url = {
+      url = "https://${var.base_domain_name}/"
+      status_code = 301
+    }
+  }
+}
+resource "cloudflare_dns_record" "taimihud_www" {
+  name    = "www.${var.base_domain_name}"
+  proxied = true
+  ttl     = 1
+  type    = "CNAME"
+  content = cloudflare_pages_project.taimihud.subdomain
+  zone_id = cloudflare_zone.taimihud.id
+}
