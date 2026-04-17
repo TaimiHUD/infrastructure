@@ -31,7 +31,7 @@ resource "cloudflare_pages_project" "taimihud" {
       env_vars = {
         UNSTABLE_PRE_BUILD = {
           type  = "plain_text"
-          value = "asdf plugin add zola https://github.com/salasrod/asdf-zola && asdf install zola ${var.zola_version} && asdf global zola ${var.zola_version}"
+          value = "true"
         }
         ZOLA_VERSION = {
           type  = "plain_text"
